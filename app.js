@@ -51,8 +51,28 @@ var showQuestion = function(question) {
 };
 
 var showInspiration = function(inspiration){
-	console.log("test");
-	return "test";
+
+	console.log(inspiration.user.display_name);
+	
+	var result = $('.templates .inspiration').clone();
+
+	var answerer = result.find('.answerer-name');
+	answerer.html("<p>"+inspiration.user.display_name+"</p>");
+	
+
+	var usertype = result.find('.user-type');
+	usertype.text(inspiration.user.user_type);
+
+	var reputation = result.find('.reputation');
+	reputation.text(inspiration.user.reputation);
+
+	var imgElem = result.find('img');
+	console.log(imgElem);
+	imgElem.attr('src', inspiration.user.profile_image);
+
+	
+
+	return result;
 }
 
 
@@ -87,7 +107,7 @@ var getUnanswered = function(tags) {
 		type: "GET",
 		})
 	.done(function(result){
-		console.log(result);
+		
 		var searchResults = showSearchResults(request.tagged, result.items.length);
 
 		$('.search-results').html(searchResults);
@@ -113,13 +133,14 @@ var getInspired = function(answerers){
 					};
 
 	var result = $.ajax({
-				url: "http://api.stackexchange.com/2.2/tags/{tag}/top-answerers/{period}",
+				url: "http://api.stackexchange.com/2.2/tags/"+request.tagged+"/top-answerers/"+request.period,
 				data: request,
 				dataType: "jsonp",
 				type: "GET",
 				})
 	.done(function(result){
-		console.log(result);
+		//console.log(result);
+		console.log(result.items[0].user.display_name);
 
 		var searchResults = showSearchResults(request.tagged, result.items.length);
 
